@@ -7,8 +7,9 @@ const nodemailer = require("nodemailer");
 const rateLimit = require("express-rate-limit");
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 2 // limit each IP to 2 requests per windowMs
+    message: '9000', // it's over 9000!
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 2 // limit each IP to 2 requests per windowMs
 });
 
 const app = express();
