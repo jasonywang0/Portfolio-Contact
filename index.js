@@ -1,10 +1,20 @@
 require('dotenv').config()
 const express = require("express");
 const router = express.Router();
+const helmet = require('helmet');
 const cors = require("cors");
 const nodemailer = require("nodemailer");
+const rateLimit = require("express-rate-limit");
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 2 // limit each IP to 2 requests per windowMs
+});
 
 const app = express();
+app.use(helmet());
+app.set('trust proxy', 1);
+app.use(limiter);
 app.use(cors());
 app.use(express.json());
 app.use("/", router);
@@ -26,17 +36,22 @@ contactEmail.verify((error) => {
   }
 });
 
+// really just here so aws doesn't complain
+// router.get("/", (req, res) => {
+//     res.json('hello')
+// })
 
-router.get("/", (req, res) => {
-    res.json('hello')
-})
 
 router.post("/", (req, res) => {
+
   const name = req.body.name;
   const email = req.body.email;
   const subject = req.body.subject; 
   const message = req.body.message;
-  if (!name || !email || !subject || !message ) return; 
+  const yum = req.body.message; //honey pot
+
+  if (!name || !email || !subject || !message || yum) return; 
+
   const mail = {
     from: email,
     to: "jasonywang0@gmail.com",
