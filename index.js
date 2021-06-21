@@ -35,7 +35,8 @@ router.post("/", (req, res) => {
   const name = req.body.name;
   const email = req.body.email;
   const subject = req.body.subject; 
-  const message = req.body.message; 
+  const message = req.body.message;
+  if (!name || !email || !subject || !message ) return; 
   const mail = {
     from: email,
     to: "jasonywang0@gmail.com",
