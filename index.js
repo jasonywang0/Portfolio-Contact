@@ -4,15 +4,18 @@ const router = express.Router();
 const cors = require("cors");
 const nodemailer = require("nodemailer");
 const rateLimit = require("express-rate-limit");
+const helmet = require('helmet')
 
 const limiter = rateLimit({
-    message: '9000', // it's over 9000!
-    windowMs: 15 * 60 * 1000, // 15 minutes
+    message: {status: '9000'}, // it's over 9000!
+    windowMs: 30 * 60 * 1000, // 30 minutes
     max: 2 // limit each IP to 2 requests per windowMs
 });
 
+
 const app = express();
 app.use(cors());
+app.use(helmet())
 app.set('trust proxy', 1);
 app.use(limiter);
 app.use(express.json());
@@ -47,9 +50,9 @@ router.post("/", (req, res) => {
   const email = req.body.email;
   const subject = req.body.subject; 
   const message = req.body.message;
-  const yum = req.body.message; //honey pot
+  const yum = req.body.yum; //honey pot
 
-  if (!name || !email || !subject || !message || yum) return; 
+  if (!name || !email || !subject || !message || yum) return res.send('ignored');
 
   const mail = {
     from: email,
