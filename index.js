@@ -1,7 +1,6 @@
 require('dotenv').config()
 const express = require("express");
 const router = express.Router();
-const helmet = require('helmet');
 const cors = require("cors");
 const nodemailer = require("nodemailer");
 const rateLimit = require("express-rate-limit");
@@ -13,7 +12,6 @@ const limiter = rateLimit({
 });
 
 const app = express();
-app.use(helmet());
 app.set('trust proxy', 1);
 app.use(limiter);
 app.use(cors());
