@@ -52,7 +52,7 @@ router.post("/", (req, res) => {
   const message = req.body.message;
   const yum = req.body.yum; //honey pot
 
-  if (!name || !email || !subject || !message || yum) return res.send('ignored');
+  if (!name || !email || !subject || !message | yum) res.end();
 
   const mail = {
     from: email,
